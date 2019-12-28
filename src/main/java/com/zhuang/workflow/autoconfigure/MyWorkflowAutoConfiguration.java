@@ -10,25 +10,40 @@ import com.zhuang.workflow.impl.activiti.ActivitiWorkflowQueryManager;
 import com.zhuang.workflow.impl.activiti.handler.CreateUserHandler;
 import com.zhuang.workflow.impl.activiti.handler.RoleIdsHandler;
 import com.zhuang.workflow.impl.activiti.manager.*;
-import org.activiti.spring.boot.DataSourceProcessEngineAutoConfiguration;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
 @ConditionalOnBean(SqlSessionFactory.class)
 @EnableConfigurationProperties(MyWorkflowProperties.class)
-@AutoConfigureAfter(DataSourceProcessEngineAutoConfiguration.DataSourceProcessEngineConfiguration.class)
+@AutoConfigureAfter(DataSourceAutoConfiguration.class)
 public class MyWorkflowAutoConfiguration {
 
     @Autowired
     private MyWorkflowProperties myWorkflowProperties;
+
+    @Bean
+    public StandaloneProcessEngineConfiguration standaloneProcessEngineConfiguration(DataSource dataSource){
+        StandaloneProcessEngineConfiguration standaloneProcessEngineConfiguration = new StandaloneProcessEngineConfiguration();
+        standaloneProcessEngineConfiguration.setDataSource(dataSource);
+        return standaloneProcessEngineConfiguration;
+    }
+
+    @Bean
+    public ProcessEngine processEngine(StandaloneProcessEngineConfiguration standaloneProcessEngineConfiguration){
+        return standaloneProcessEngineConfiguration.buildProcessEngine();
+    }
 
     @Bean
     public ActivitiWorkflowEngine workflowEngine() {
@@ -63,29 +78,29 @@ public class MyWorkflowAutoConfiguration {
     }
 
     @Bean
-    public DeploymentManager deploymentManager(){
-        DeploymentManager deploymentManager=new DeploymentManager();
+    public DeploymentManager deploymentManager() {
+        DeploymentManager deploymentManager = new DeploymentManager();
         deploymentManager.setBasePath("diagrams/");
         return deploymentManager;
     }
 
     @Bean
-    public ProcessDefinitionManager processDefinitionManager(){
+    public ProcessDefinitionManager processDefinitionManager() {
         return new ProcessDefinitionManager();
     }
 
     @Bean
-    public ProcessVariablesManager processVariablesManager(){
+    public ProcessVariablesManager processVariablesManager() {
         return new ProcessVariablesManager();
     }
 
     @Bean
-    public UserTaskManager userTaskManager(){
+    public UserTaskManager userTaskManager() {
         return new UserTaskManager();
     }
 
     @Bean
-    public ProcessInstanceManager processInstanceManager(){
+    public ProcessInstanceManager processInstanceManager() {
         return new ProcessInstanceManager();
     }
 

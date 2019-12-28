@@ -11,7 +11,7 @@
 
     <groupId>com.github.weibin268</groupId>
     <artifactId>my-workflow-starter</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.0</version>
     <name>my-workflow-starter</name>
     <description>my-workflow-starter</description>
     <url>https://github.com/weibin268/my-workflow-starter</url>
@@ -39,6 +39,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <activiti.version>5.23.0</activiti.version>
     </properties>
 
     <build>
@@ -92,8 +93,8 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring-boot-starter-basic</artifactId>
-            <version>6.0.0</version>
+            <artifactId>activiti-engine</artifactId>
+            <version>${activiti.version}</version>
         </dependency>
     </dependencies>
 
