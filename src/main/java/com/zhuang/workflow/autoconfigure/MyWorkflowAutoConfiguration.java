@@ -10,7 +10,7 @@ import com.zhuang.workflow.impl.activiti.ActivitiWorkflowQueryManager;
 import com.zhuang.workflow.impl.activiti.handler.CreateUserHandler;
 import com.zhuang.workflow.impl.activiti.handler.RoleIdsHandler;
 import com.zhuang.workflow.impl.activiti.manager.*;
-import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.*;
 import org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,41 @@ public class MyWorkflowAutoConfiguration {
     @Bean
     public ProcessEngine processEngine(StandaloneProcessEngineConfiguration standaloneProcessEngineConfiguration){
         return standaloneProcessEngineConfiguration.buildProcessEngine();
+    }
+
+    @Bean
+    public RepositoryService repositoryService(ProcessEngine processEngine){
+        return processEngine.getRepositoryService();
+    }
+
+    @Bean
+    public RuntimeService runtimeService(ProcessEngine processEngine){
+        return processEngine.getRuntimeService();
+    }
+
+    @Bean
+    public FormService formService(ProcessEngine processEngine){
+        return processEngine.getFormService();
+    }
+
+    @Bean
+    public IdentityService identityService(ProcessEngine processEngine){
+        return processEngine.getIdentityService();
+    }
+
+    @Bean
+    public TaskService taskService(ProcessEngine processEngine){
+        return processEngine.getTaskService();
+    }
+
+    @Bean
+    public HistoryService historyService(ProcessEngine processEngine){
+        return processEngine.getHistoryService();
+    }
+
+    @Bean
+    public ManagementService managementService(ProcessEngine processEngine){
+        return processEngine.getManagementService();
     }
 
     @Bean
